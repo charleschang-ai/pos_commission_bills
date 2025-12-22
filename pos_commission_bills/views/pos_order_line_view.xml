@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <!-- Action -->
+        <record id="action_pos_order_line_custom1" model="ir.actions.act_window">
+            <field name="name">POS Order Lines</field>
+            <field name="res_model">pos.order.line</field>
+            <field name="view_mode">list</field>
+<!--            <field name="domain">[('is_commission', '=', True)]</field>-->
+            <field name="context">{'search_default_commission_true': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new customer in your address book
+                </p>
+            </field>
+        </record>
+
+        <!-- Menu Item -->
+        <menuitem id="menu_pos_order_line_root_custom"
+                  name="POS Order Lines"
+                  parent="point_of_sale.menu_point_of_sale"
+                  sequence="200"
+                  action="action_pos_order_line_custom1"/>
+
+        <!-- Tree View -->
+        <record id="view_pos_order_line_tree" model="ir.ui.view">
+            <field name="name">pos.order.line.tree</field>
+            <field name="model">pos.order.line</field>
+            <field name="priority">10</field>
+            <field name="arch" type="xml">
+                <list string="POS Order Line" editable="bottom" create="false" js_class="sale_order_create_button"
+                      delete="false" open_form_view="False" default_order="order_date desc">
+                    <header>
+                        <button name="%(pos_commission_bills.action_commission_wizard)d" type="action"
+                                string="Calculate Commission"
+                                icon="fa-print"/>
+                        <button name="action_lock_commission_view" type="object"
+                                string="Lock"
+                                icon="fa-lock"/>
+                        <button name="action_unlock_commission_view" type="object"
+                                icon="fa-unlock" string="Unlock"/>
+                    </header>
+                    <field name="is_locked" readonly="1"/>
+                    <field name="status_display" widget="badge"
+                           decoration-success="is_billed"
+                           decoration-danger="not is_billed"/>
+                    <field name="order_id" readonly="1"/>
+                    <field name="order_date" readonly="1"/>
+                    <field name="product_id" readonly="1"/>
+
+<!--                    <field name="refund_orderline_ids"/>-->
+<!--                    <field name="refunded_orderline_id"/>-->
+<!--                    <field name="remaining_qty"/>-->
+                    <field name="refunded_qty" optional="show"/>
+
+                    <field name="customer_note" optional="hide"/>
+                    <field name="qty" readonly="1" sum="qty"/>
+                    <field name="price_unit" readonly="1"/>
+                    <field name="commission_rate"/>
+                    <field name="storage_fees" optional="hide"/>
+                    <field name="currency_id" column_invisible="True"/>
+                    <field name="price_subtotal_incl" string="Total" sum="price_subtotal_incl"/>
+                    <field name="commission_fees" sum="commission_fees"/>
+                    <field name="service_fee" sum="service_fee"/>
+                    <field name="spin_off_fee" sum="spin_off_fee"/>
+                    <field name="customer_id" optional="hide"/>
+
+                    <field name="billed_date" readonly="1" optional="hide"/>
+                    <field name="total_storage_fees" readonly="1" sum="total_storage_fees" optional="hide"/>
+                    <field name="vendor_id" readonly="1" optional="hide"/>
+                    <field name="is_commission" column_invisible="True"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_pos_order_line_search" model="ir.ui.view">
+            <field name="name">POS Order Line Search</field>
+            <field name="model">pos.order.line</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="order_id"/>
+                    <field name="order_date"/>
+                    <field name="product_id"/>
+                    <field name="price_unit"/>
+                    <field name="commission_rate"/>
+                    <field name="commission_fees"/>
+                    <field name="billed_date"/>
+                    <field name="total_storage_fees"/>
+                    <field name="vendor_id"/>
+                    <field name="remaining_qty"/>
+                    <filter string="Billed" name="billed_true" domain="[('is_billed', '=', True)]"/>
+                    <filter string="Not Billed" name="billed_false" domain="[('is_billed', '=', False)]"  context="{'default_is_billed': False}"/>
+                    <filter string="Consignment lines" name="commission_true" domain="[('is_commission', '=', True), ('remaining_qty', '!=', 0), ('refunded_orderline_id', '=', False)]" context="{'default_is_commission': True}"/>
+                    <filter string="Non-consignment lines" name="commission_false" domain="[('is_commission', '=', False)]"/>
+
+                    <filter string="Order Date" name="order_date" date="order_date"/>
+                    <filter string="Billed Date" name="billed_date" date="billed_date"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Order" name="order_id" domain="[]" context="{'group_by': 'order_id'}"/>
+                        <filter string="Order Date" name="order_date" domain="[]" context="{'group_by': 'order_date'}"/>
+                        <filter string="Vendor" name="vendor_id" domain="[]" context="{'group_by': 'vendor_id'}"/>
+                        <filter string="Customer" name="customer_id" domain="[]" context="{'group_by': 'customer_id'}"/>
+                        <filter string="Billed Date" name="billed_date" domain="[]" context="{'group_by': 'billed_date'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template inherit_id='point_of_sale.pos_session_sales_details' id="pos_session_sales_details2">
+        <xpath expr="//div[@id='sales']//table//tbody" position="inside">
+            <t t-if="storage_fees">
+                <tr>
+                    <td>
+                        <strong>Storage Fees</strong>
+                    </td>
+                    <td/>
+                    <td class="text-end">
+
+                    </td>
+                    <td class="text-end">
+                        <t t-if="currency['position']">
+                            <strong>
+                                <span t-out='storage_fees'
+                                      t-options="{'widget': 'float', 'precision': currency['precision']}">10000
+                                </span>
+                                <span t-out='currency["symbol"]'>$</span>
+                            </strong>
+                        </t>
+                        <t t-else="">
+                            <strong>
+                                <span t-out='currency["symbol"]'>$</span>
+                                <span t-out='storage_fees'
+                                      t-options="{'widget': 'float', 'precision': currency['precision']}">1000
+                                </span>
+                            </strong>
+                        </t>
+                    </td>
+                </tr>
+            </t>
+
+        </xpath>
+        <xpath expr="//t[@t-if='date_start and date_stop']" position="replace">
+            <t t-if="date_start and date_stop">
+                <span t-out="start_date" t-options="{'widget': 'datetime'}">2-03-2000 9:00 AM</span>
+                -
+                <span t-out="end_date" t-options="{'widget': 'datetime'}">Demo 3-03-2000 5:00 PM</span>
+            </t>
+        </xpath>
+
+        <!--service fee part-->
+        <xpath expr="//div[@id='sales']//table//tbody" position="inside">
+            <t t-if="service_fee_total">
+                <tr>
+                    <td>
+                        <strong>Service Fee</strong>
+                    </td>
+                    <td class="text-end"/>
+                    <td class="text-end">
+                        <t t-if="currency['position']">
+                            <strong>
+                                <span t-out="service_fee_total"
+                                      t-options="{'widget': 'float', 'precision': currency['precision']}"/>
+                                <span t-out="currency['symbol']">$</span>
+                            </strong>
+                        </t>
+                        <t t-else="">
+                            <strong>
+                                <span t-out="currency['symbol']">$</span>
+                                <span t-out="service_fee_total"
+                                      t-options="{'widget': 'float', 'precision': currency['precision']}"/>
+                            </strong>
+                        </t>
+                    </td>
+                </tr>
+            </t>
+        </xpath>
+    </template>
+</odoo>

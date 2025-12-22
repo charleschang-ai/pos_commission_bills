@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_pos_details_wizard_custom\" model="ir.ui.view">
+        <field name="name">pos.details.wizard.form.add</field>
+        <field name="model">pos.details.wizard</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_details_wizard"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='generate_report']" position="before">
+                <button name="generate_report_by_execl" string="Report" type="object" class="btn-outline-primary"
+                        data-hotkey="q"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
