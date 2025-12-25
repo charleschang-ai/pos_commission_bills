@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 ################################################################################
-#    Author: Charles
+#    Author: Don Shan
 #
 ################################################################################
 {
@@ -12,8 +12,8 @@
     businesses automate commission tracking, streamline billing, and improve financial transparency. 
     Whether you manage retail stores, restaurants, or service-based POS operations, 
     this module ensures accurate commission calculation and effortless settlement with staff or partners.""",
-    'author': 'Charles Chang',
-    'maintainer': 'Charles',
+    'author': 'Don Shan',
+    'maintainer': 'Don Shan',
     'depends': ['base', 'point_of_sale', 'pos_loyalty'],
     'data': [
         'security/ir.model.access.csv',
